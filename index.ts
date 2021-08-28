@@ -206,3 +206,25 @@ class SquareFromEitherSide {
         this.curr.startUpdating(cb)
     }
 }
+
+class Renderer {
+
+    sfes : SquareFromEitherSide = new SquareFromEitherSide()
+    animator : Animator = new Animator()
+
+    render(context : CanvasRenderingContext2D) {
+        this.sfes.draw(context)
+    }
+
+    handleTap(cb : Function) {
+        this.sfes.startUpdating(() => {
+            this.animator.start(() => {
+                cb()
+                this.sfes.update(() => {
+                    this.animator.stop()
+                    cb()
+                })
+            })
+        })
+    }
+}
