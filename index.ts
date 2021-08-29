@@ -1,7 +1,8 @@
 const w : number = window.innerWidth
 const h : number = window.innerHeight
-const scGap : number = 4 
-const parts : number = 0.04 / 4
+
+const parts : number = 3
+const scGap : number = 0.03 / 3
 const delay : number = 20 
 const backColor : string = "#BDBDBD"
 const colors : Array<string> = [
@@ -12,7 +13,7 @@ const colors : Array<string> = [
     "#FFD600"
 ]
 const strokeFactor : number = 90 
-const sizeFactor : number = 3.9 
+const sizeFactor : number = 6.9 
 
 class ScaleUtil {
 
@@ -39,17 +40,19 @@ class DrawingUtil {
         const sc1 : number = ScaleUtil.divideScale(scale, 0, parts)
         const sc2 : number = ScaleUtil.divideScale(scale, 1, parts)
         const sc3 : number = ScaleUtil.divideScale(scale, 2, parts)
+        console.log(sc1, sc2, sc3)
         context.save()
         context.translate(w / 2, h / 2)
         for (var j = 0; j < 2; j++) {
             context.save()
             context.scale(1 - 2 * j, 1 - 2 * j)
+            context.translate(0, (h / 2 + size) * sc3)
             context.save()
             context.translate((w / 2) * (1 - sc1), 0)
             context.fillRect(0, -size / 2, size, size) 
             context.restore()
             context.save()
-            context.translate(size / 2, -(h / 2) * (1 - sc2) + (h / 2 + size) * sc3)
+            context.translate(size / 2, -(h / 2) * (1 - sc2))
             DrawingUtil.drawLine(context, 0, 0, 0, -size)
             context.restore()
             context.restore()
@@ -61,6 +64,7 @@ class DrawingUtil {
         context.lineCap = 'round'
         context.lineWidth = Math.min(w, h) / strokeFactor 
         context.strokeStyle = colors[i]
+        context.fillStyle = colors[i]
         DrawingUtil.drawSquareFromEitherSide(context, scale)
     }
 }
